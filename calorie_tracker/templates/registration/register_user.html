@@ -1,0 +1,28 @@
+{% extends "calorie_tracker/layout.html" %}
+
+{% block content %}
+
+<form method="POST" action="{% url 'calorie_tracker:register' %}">
+	{% csrf_token %}
+	<table>
+		{% if form.errors %}
+			{% for field, errors in form.errors.items %}
+				{% for error in errors %}
+					<tr><td>{{ error }}</td></tr>
+				{% endfor %}
+			{% endfor %}
+		{% endif %}
+		
+		{% for field in form %}
+		<tr>
+			<td>{{ field.help_text }}</td>
+		</tr>
+		<tr>
+			<td>{{ field.label_tag}} {{ field }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	<input type="submit" class="button" value="Create user">
+</form>
+
+{% endblock %}

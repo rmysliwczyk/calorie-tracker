@@ -1,0 +1,8 @@
+{% extends "calorie_tracker/layout.html" %}
+{% load static %}
+{% block content %}
+<div id="products-div"></div>
+
+<script>const csrftoken = "{{ csrf_token }}"</script>
+<script src="{% static 'calorie_tracker/products.js' %}"></script>
+{% endblock %}
