@@ -110,7 +110,7 @@ async function deleteProduct(productId) {
 }
 
 async function scanBarcode() {
-    console.log("TODO Scan");
+    showScanner("products-div");
 }
 
 async function searchProducts(event) {
