@@ -1,6 +1,6 @@
-async function getProducts(name="") {
+async function getProducts(name="", barcode="") {
     try {
-        let url = `api/products/?name__contains=${name}`;
+        let url = `api/products/?name__contains=${name}&barcode__contains=${barcode}`;
         const response = await fetch(url, {
             method: "get",
             credentials: "same-origin",
@@ -120,6 +120,8 @@ async function searchProducts(event) {
 async function showEditProductForm(productId) {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
+    afterScan = function() { showEditProductForm(productId) };
+    productsDiv.setAttribute("style", "");
     const product = await getProduct(productId);
 
     const editProductFormTemplate = document.querySelector("#product-form-template");
@@ -145,9 +147,18 @@ async function showEditProductForm(productId) {
 
     editProductForm.querySelector("#form-buttons").prepend(removeProductButton);
 
+    if(scannedBarcode == "")
+    {
+        editProductForm.querySelector("#product-barcode").value = product.barcode;
+    }
+    else
+    {
+        editProductForm.querySelector("#product-barcode").value = scannedBarcode;
+    }
+    scannedBarcode = "";
     editProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
         event.preventDefault();
-        console.log("Scan");
+        scanBarcode();
     });
 
     editProductForm.querySelector("#product-form-submit-button").textContent = "Update";
@@ -161,6 +172,7 @@ async function showEditProductForm(productId) {
             fats: document.querySelector("#product-fats").value,
             carbs: document.querySelector("#product-carbs").value,
             proteins: document.querySelector("#product-proteins").value,
+            barcode: document.querySelector("#product-barcode").value,
             portion_size: document.querySelector("#product-portion-weight").value != "" ? document.querySelector("#product-portion-weight").value : 0
         }).then( function(){
             showProducts();
@@ -173,14 +185,18 @@ async function showEditProductForm(productId) {
 async function showAddProductForm() {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
+    afterScan = showAddProductForm;
+    productsDiv.setAttribute("style", "");
     
     const addProductFormTemplate = document.querySelector("#product-form-template");
 
     const addProductForm = addProductFormTemplate.content.cloneNode(true);
+    addProductForm.querySelector("#product-barcode").value = scannedBarcode;
+    scannedBarcode = "";
 
     addProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
         event.preventDefault();
-        console.log("Scan");
+        scanBarcode();
     });
 
     addProductForm.querySelector("#product-form-submit-button").textContent = "Add product";
@@ -202,14 +218,17 @@ async function showAddProductForm() {
     productsDiv.append(addProductForm);
 }
 
-async function showProducts(name="") {
+async function showProducts(name="", barcode="") {
+    scannedBarcode = "";
+    afterScan = function() { showProducts("", scannedBarcode); scannedBarcode = "";};
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
-    const products = await getProducts(name);
+    productsDiv.setAttribute("style", "");
+    const products = await getProducts(name, barcode);
 
     const searchProductOptionsTemplate = document.querySelector("#search-product-options-template");
     const searchProductOptions = searchProductOptionsTemplate.content.cloneNode(true);
-    searchProductOptions.querySelector("#scan-barcode-button").addEventListener("click", scanBarcode);
+    searchProductOptions.querySelector("#scan-barcode-button").addEventListener("click", function(){scanBarcode()});
     searchProductOptions.querySelector("#add-product-button").addEventListener("click", showAddProductForm);
 
     let timeOut;

@@ -20,7 +20,8 @@ class ProductFilter(filters.FilterSet):
 	class Meta:
 		model = Product
 		fields = {
-			"name": ["contains", "exact"]
+			"name": ["contains", "exact"],
+			"barcode": ["contains", "exact"]
 		}
 
 class FoodViewSet(viewsets.ModelViewSet):
@@ -52,7 +53,6 @@ class MealViewSet(viewsets.ModelViewSet):
 	permission_classes = [permissions.IsAuthenticated]
 
 	def perform_create(self, serializer):
-		print("oops")
 		serializer.save(user=self.request.user)
 
 
