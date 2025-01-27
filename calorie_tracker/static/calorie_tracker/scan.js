@@ -1,10 +1,12 @@
 afterScan = undefined;
 scannedBarcode = "";
+let html5QrcodeScanner;
 
 function onScanSuccess(decodedText, decodedResult) {
     // handle the scanned code as you like, for example:
     scannedBarcode = decodedText;
     afterScan();
+    html5QrcodeScanner.clear();
 }
   
 function onScanFailure(error) {
@@ -14,7 +16,7 @@ function onScanFailure(error) {
 
 function showScanner(targetDivName)
 {    
-    let html5QrcodeScanner = new Html5QrcodeScanner(
+    html5QrcodeScanner = new Html5QrcodeScanner(
     `${targetDivName}`,
     { fps: 10, qrbox: {width: 250, height: 250} },
     /* verbose= */ false);
