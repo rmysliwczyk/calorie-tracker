@@ -120,7 +120,7 @@ async function searchProducts(event) {
     showProducts(event.target.value);
 }
 
-async function showEditProductForm(productId, barcode="") {
+async function showEditProductForm(productId, receivedBarcode="") {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
     productsDiv.setAttribute("style", "");
@@ -149,13 +149,13 @@ async function showEditProductForm(productId, barcode="") {
 
     editProductForm.querySelector("#form-buttons").prepend(removeProductButton);
 
-    if(barcode == "")
+    if(receivedBarcode == "")
     {
         editProductForm.querySelector("#product-barcode").value = product.barcode;
     }
     else
     {
-        editProductForm.querySelector("#product-barcode").value = scannedBarcode;
+        editProductForm.querySelector("#product-barcode").value = receivedBarcode;
     }
 
     editProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
@@ -184,7 +184,7 @@ async function showEditProductForm(productId, barcode="") {
     productsDiv.append(editProductForm);
 }
 
-async function showAddProductForm(barcode="") {
+async function showAddProductForm(receivedBarcode="") {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
     productsDiv.setAttribute("style", "");
@@ -192,7 +192,7 @@ async function showAddProductForm(barcode="") {
     const addProductFormTemplate = document.querySelector("#product-form-template");
 
     const addProductForm = addProductFormTemplate.content.cloneNode(true);
-    addProductForm.querySelector("#product-barcode").value = barcode;
+    addProductForm.querySelector("#product-barcode").value = receivedBarcode;
 
 
     addProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
@@ -210,7 +210,7 @@ async function showAddProductForm(barcode="") {
             fats: document.querySelector("#product-fats").value,
             carbs: document.querySelector("#product-carbs").value,
             proteins: document.querySelector("#product-proteins").value,
-            barcode: document.querySelector("#product-barcode").value,
+            barcode: receivedBarcode,
             portion_size: document.querySelector("#product-portion-weight").value != "" ? document.querySelector("#product-portion-weight").value : 0
         }).then( function(){
             showProducts();
@@ -220,19 +220,19 @@ async function showAddProductForm(barcode="") {
     productsDiv.append(addProductForm);
 }
 
-async function showProducts(name="", barcode="") {
+async function showProducts(name="", receivedBarcode="") {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
     productsDiv.setAttribute("style", "");
-    const products = await getProducts(name, barcode);
+    const products = await getProducts(name, receivedBarcode);
 
     const searchProductOptionsTemplate = document.querySelector("#search-product-options-template");
     const searchProductOptions = searchProductOptionsTemplate.content.cloneNode(true);
     searchProductOptions.querySelector("#scan-barcode-button").addEventListener("click", function()
     { 
-        scanBarcode(function(returnedBarcode) { showProducts(name="", barcode=returnedBarcode) });
+        scanBarcode(function(returnedBarcode) { showProducts(name="", returnedBarcode) });
     });
-    searchProductOptions.querySelector("#add-product-button").addEventListener("click", function() { showAddProductForm(barcode=""); });
+    searchProductOptions.querySelector("#add-product-button").addEventListener("click", function() { showAddProductForm(receivedBarcode=""); });
 
     let timeOut;
     searchProductOptions.querySelector("#food-search-input").value = name;

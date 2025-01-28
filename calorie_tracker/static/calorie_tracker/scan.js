@@ -5,6 +5,7 @@ function onScanSuccess(decodedText, decodedResult) {
     // handle the scanned code as you like, for example:
     scannedBarcode = decodedText;
     document.dispatchEvent(new CustomEvent("barcode-scanned", {detail: {barcode: decodedText}}));
+    html5QrcodeScanner.clear();
 }
   
 function onScanFailure(error) {
