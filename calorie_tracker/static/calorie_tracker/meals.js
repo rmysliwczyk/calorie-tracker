@@ -146,11 +146,11 @@ async function showAddMealForm(productId, mealtimeId) {
         document.querySelector("#meal-calories").value = event.target.value * selectedFood.calories / 100 + " kcal";
     });
 
-    addMealForm.querySelector("#meal-form").addEventListener("submit", function(event){
+    addMealForm.querySelector("#meal-form").addEventListener("submit", async function(event){
         event.preventDefault();
 
         document.querySelector("#meal-calories").value;
-        addMeal(
+        await addMeal(
             meal = {
                 food: selectedFood.id,
                 weight: document.querySelector("#meal-weight").value,
@@ -187,9 +187,9 @@ async function showEditMealForm(mealId) {
     const removeMealButton = document.createElement("div");
     removeMealButton.setAttribute("class", "col-4 p-2")
     removeMealButton.innerHTML = `<button id="meal-delete-button" class="btn btn-danger">Delete meal</button>`;
-    removeMealButton.addEventListener("click", function(event) {
+    removeMealButton.addEventListener("click", async function(event) {
         event.preventDefault();
-        deleteMeal(mealId);
+        await deleteMeal(mealId);
         showMeals();
     })
     editMealForm.querySelector("#form-buttons").append(removeMealButton);
@@ -198,11 +198,11 @@ async function showEditMealForm(mealId) {
         document.querySelector("#meal-calories").value = event.target.value * food.calories / 100 + " kcal";
     });
 
-    editMealForm.querySelector("#meal-form").addEventListener("submit", function(event){
+    editMealForm.querySelector("#meal-form").addEventListener("submit", async function(event){
         event.preventDefault();
 
         document.querySelector("#meal-calories").value;
-        updateMeal(
+        await updateMeal(
             {
                 id: meal.id,
                 food: food.id,

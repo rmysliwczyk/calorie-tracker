@@ -160,7 +160,7 @@ async function showEditProductForm(productId, receivedBarcode="") {
 
     editProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
         event.preventDefault();
-        scanBarcode(function(returnedBarcode) {showEditProductForm(productId, barcode = returnedBarcode)});
+        scanBarcode(function(returnedBarcode) {showEditProductForm(productId, returnedBarcode)});
     });
 
     editProductForm.querySelector("#product-form-submit-button").textContent = "Update";
@@ -196,7 +196,7 @@ async function showAddProductForm(receivedBarcode="") {
 
     addProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
         event.preventDefault();
-        scanBarcode(function(returnedBarcode) {showAddProductForm(returnedBarcode);});
+        scanBarcode(function(returnedBarcode) { console.log("what"); showAddProductForm(returnedBarcode)});
     });
 
     addProductForm.querySelector("#product-form-submit-button").textContent = "Add product";
