@@ -58,7 +58,7 @@ class MealViewSet(viewsets.ModelViewSet):
 
 @login_required
 def index(request):
-    return render(request, "calorie_tracker/index.html")
+    return redirect(reverse("calorie_tracker:meals"))
 
 def products(request):
 	return render(request, "calorie_tracker/products.html")
