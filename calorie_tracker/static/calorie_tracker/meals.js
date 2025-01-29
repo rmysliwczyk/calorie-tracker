@@ -36,7 +36,7 @@ async function deleteMeal(mealId) {
     try {
         let url = `api/meals/${mealId}/`;
         const response = await fetch(url, {
-            method: "delete",
+            method: "DELETE",
             credentials: "same-origin",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -73,7 +73,7 @@ async function addMeal(meal) {
     try {
         let url = `api/meals/`;
         const response = await fetch(url, {
-            method: "post",
+            method: "POST",
             credentials: "same-origin",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -95,7 +95,7 @@ async function updateMeal(meal) {
     try {
         let url = `api/meals/${meal.id}/`;
         const response = await fetch(url, {
-            method: "patch",
+            method: "PATCH",
             credentials: "same-origin",
             headers: {
                 "X-CSRFToken": csrftoken,

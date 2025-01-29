@@ -2,7 +2,7 @@ async function getProducts(name="", barcode="") {
     try {
         let url = `api/products/?name__contains=${name}&barcode__contains=${barcode}`;
         const response = await fetch(url, {
-            method: "get",
+            method: "GET",
             credentials: "same-origin",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -42,7 +42,7 @@ async function addProduct(product) {
     try {
         let url = `api/products/`;
         const response = await fetch(url, {
-            method: "post",
+            method: "POST",
             credentials: "same-origin",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -67,7 +67,7 @@ async function updateProduct(product) {
     try {
         let url = `api/products/${product.id}/`;
         const response = await fetch(url, {
-            method: "patch",
+            method: "PATCH",
             credentials: "same-origin",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -165,20 +165,19 @@ async function showEditProductForm(productId, receivedBarcode="") {
 
     editProductForm.querySelector("#product-form-submit-button").textContent = "Update";
 
-    editProductForm.querySelector("#product-form").addEventListener("submit", function(event){
+    editProductForm.querySelector("#product-form-submit-button").addEventListener("click", async function(event){
         event.preventDefault();
-        updateProduct({
+        await updateProduct({
             id: productId,
             name: document.querySelector("#product-name").value,
             calories: document.querySelector("#product-calories").value,
             fats: document.querySelector("#product-fats").value,
             carbs: document.querySelector("#product-carbs").value,
             proteins: document.querySelector("#product-proteins").value,
-            barcode: document.querySelector("#product-barcode").value,
+            barcode: receivedBarcode != "" ? receivedBarcode : document.querySelector("#product-barcode").value,
             portion_size: document.querySelector("#product-portion-weight").value != "" ? document.querySelector("#product-portion-weight").value : 0
-        }).then( function(){
-            showProducts();
         });
+        showProducts();
     });
 
     productsDiv.append(editProductForm);
