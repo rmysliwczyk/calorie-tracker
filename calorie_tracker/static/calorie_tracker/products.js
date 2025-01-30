@@ -196,7 +196,21 @@ async function showAddProductForm(receivedBarcode="") {
 
     addProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
         event.preventDefault();
-        scanBarcode(function(returnedBarcode) { console.log("what"); showAddProductForm(returnedBarcode)});
+        window.sessionStorage.setItem("name", document.querySelector("#product-name").value);
+        window.sessionStorage.setItem("calories", document.querySelector("#product-calories").value);
+        window.sessionStorage.setItem("fats", document.querySelector("#product-fats").value);
+        window.sessionStorage.setItem("carbs", document.querySelector("#product-carbs").value);
+        window.sessionStorage.setItem("proteins", document.querySelector("#product-proteins").value);
+        window.sessionStorage.setItem("portion_size", document.querySelector("#product-portion-weight").value)
+        scanBarcode(async function(returnedBarcode) {
+            await showAddProductForm(returnedBarcode);
+            document.querySelector("#product-name").value = window.sessionStorage.getItem("name");
+            document.querySelector("#product-calories").value =  window.sessionStorage.getItem("calories");
+            document.querySelector("#product-fats").value = window.sessionStorage.getItem("fats");
+            document.querySelector("#product-carbs").value = window.sessionStorage.getItem("carbs");
+            document.querySelector("#product-proteins").value = window.sessionStorage.getItem("proteins");
+            document.querySelector("#product-portion-weight").value = window.sessionStorage.getItem("portion_size");
+        });
     });
 
     addProductForm.querySelector("#product-form-submit-button").textContent = "Add product";
