@@ -1,8 +1,8 @@
 let openedMealtime = "";
 
-async function getMeals() {
+async function getMeals(date="") {
     try {
-        let url = `api/meals`;
+        let url = `api/meals/?date=${date}`;
         const response = await fetch(url);
         if(!response.ok) {
             throw new Error(`Response status: ${response.status}`);
@@ -153,6 +153,7 @@ async function showAddMealForm(productId, mealtimeId) {
         await addMeal(
             meal = {
                 food: selectedFood.id,
+                date: window.sessionStorage.getItem("selected_date"),
                 weight: document.querySelector("#meal-weight").value,
                 meal_time: mealtimeId
             }
@@ -216,7 +217,7 @@ async function showEditMealForm(mealId) {
 }
 
 
-async function showMeals() {
+async function showMeals(date) {
 
     mealTimes = {
         1: "Breakfast",
@@ -228,15 +229,29 @@ async function showMeals() {
 
     const mealsDiv = document.querySelector("#meals-div");
     mealsDiv.innerHTML = `<div class="spinner-border" role="status"> <span class="sr-only"></span></div>`;
-    const meals = await getMeals();
 
+    if(window.sessionStorage.getItem("selected_date") !== null)
+    {
+        date = window.sessionStorage.getItem("selected_date");
+    }
+    else
+    {
+        date = new Date(Date.now()).toISOString().split("T")[0];
+    }
+    
+    const meals = await getMeals(date);
+    
     const mealtimesAccordionTemplate = document.querySelector("#mealtimes-accordion-template");
     const mealtimesAccordionItemTemplate = document.querySelector("#mealtimes-accordion-item-template");
     const mealsListTemplate = document.querySelector("#meals-list-template");
     const mealsListItemTemplate = document.querySelector("#meals-list-item-template");
+    const dailyCaloriesTemplate = document.querySelector("#daily-calories-template");
 
     const mealtimesAccordion = mealtimesAccordionTemplate.content.cloneNode(true);
+    const dailyCalories = dailyCaloriesTemplate.content.cloneNode(true);
 
+
+    let dailyCaloriesTotal = 0;
     for(mealtimeId in mealTimes)
     {
         const mealtimesAccordionItem = mealtimesAccordionItemTemplate.content.cloneNode(true);
@@ -244,8 +259,6 @@ async function showMeals() {
 
         mealtimesAccordionItem.querySelector(".accordion-button").setAttribute("data-bs-target", `#mealtime-collapse-${mealtimeId}`);
         mealtimesAccordionItem.querySelector(".accordion-collapse").setAttribute("id", `mealtime-collapse-${mealtimeId}`);
-
-        mealtimesAccordionItem.querySelector(".accordion-button").textContent = mealTimes[mealtimeId];
         
         mealtimesAccordionItem.querySelector(".btn-add-meal").setAttribute("id", `add-meal-to-mealtime-${mealtimeId}`);
 
@@ -255,6 +268,8 @@ async function showMeals() {
         })
 
         const mealsList = mealsListTemplate.content.cloneNode(true);
+
+        let mealtimeCalories = 0
         for (var meal of meals){
             if(meal.meal_time == mealtimeId)
             {
@@ -270,14 +285,46 @@ async function showMeals() {
                 })
         
                 mealsList.querySelector("ul").append(mealsListItem);
+
+                mealtimeCalories += meal.total_calories;
             }
         }
 
+        mealtimesAccordionItem.querySelector(".accordion-button").innerHTML = `
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    ${mealTimes[mealtimeId]}
+                </div class="col">
+                <div class="col">
+                    ${mealtimeCalories.toFixed(2)} kcal
+                </div class="col">
+            </div>
+        </div>`;
+
         mealtimesAccordionItem.querySelector(".accordion-body").append(mealsList);
         mealtimesAccordion.querySelector("#mealtimes-accordion").append(mealtimesAccordionItem);
+
+        dailyCaloriesTotal += mealtimeCalories;
     }
 
     mealsDiv.innerHTML = "";
+
+    const dateSelectTemplate = document.querySelector("#date-select-template");
+    const dateSelect = dateSelectTemplate.content.cloneNode(true);
+
+    dateSelect.querySelector("#date-selector").valueAsDate = new Date(date);
+
+    dateSelect.querySelector("#date-selector").addEventListener("change", function(){
+        const newDate = document.querySelector("#date-selector").valueAsDate;
+        window.sessionStorage.setItem("selected_date", newDate.toISOString().split("T")[0]);
+        showMeals(newDate);
+    });
+
+    dailyCalories.querySelector("#daily-calories").innerHTML = `<h5> Total calories: ${dailyCaloriesTotal.toFixed(2)} kcal </h5>`;
+
+    mealsDiv.append(dateSelect);
+    mealsDiv.append(dailyCalories);
     mealsDiv.append(mealtimesAccordion);
 
     if (openedMealtime != "")

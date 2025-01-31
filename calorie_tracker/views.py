@@ -10,6 +10,7 @@ from .models import Product, Meal, Food
 from .serializers import *
 from rest_framework import permissions, viewsets
 from django_filters import rest_framework as filters
+from django_filters import DateFilter
 
 class ProductForm(ModelForm):
 	class Meta:
@@ -23,6 +24,12 @@ class ProductFilter(filters.FilterSet):
 			"name": ["contains", "exact"],
 			"barcode": ["contains", "exact"]
 		}
+
+class MealFilter(filters.FilterSet):
+	date = DateFilter()
+	class Meta:
+		model = Meal
+		fields = ["date"]
 
 class FoodViewSet(viewsets.ModelViewSet):
 	queryset = Food.objects.all()
@@ -51,6 +58,8 @@ class MealViewSet(viewsets.ModelViewSet):
 	queryset = Meal.objects.all()
 	serializer_class = MealSerializer
 	permission_classes = [permissions.IsAuthenticated]
+	filterset_class = MealFilter
+	filter_backends = [filters.DjangoFilterBackend]
 
 	def perform_create(self, serializer):
 		serializer.save(user=self.request.user)

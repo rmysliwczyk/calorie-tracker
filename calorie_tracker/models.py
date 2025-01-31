@@ -55,7 +55,7 @@ class Meal(models.Model):
         (4, "Dinner"),
         (5, "Supper")
     ]
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateField(editable=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="meals")
     food = models.ForeignKey(Food, related_name="meals", on_delete=models.CASCADE, null=True, blank=True)
     weight = PositiveDecimalField(max_digits=10, decimal_places=2) # Weight of the meal
