@@ -217,7 +217,7 @@ async function showEditMealForm(mealId) {
 }
 
 
-async function showMeals(date) {
+async function showMeals() {
 
     mealTimes = {
         1: "Breakfast",
@@ -230,15 +230,6 @@ async function showMeals(date) {
     const mealsDiv = document.querySelector("#meals-div");
     mealsDiv.innerHTML = `<div class="spinner-border" role="status"> <span class="sr-only"></span></div>`;
 
-    if(window.sessionStorage.getItem("selected_date") !== null)
-    {
-        date = window.sessionStorage.getItem("selected_date");
-    }
-    else
-    {
-        date = new Date(Date.now()).toISOString().split("T")[0];
-    }
-    
     const meals = await getMeals(date);
     
     const mealtimesAccordionTemplate = document.querySelector("#mealtimes-accordion-template");
@@ -315,10 +306,11 @@ async function showMeals(date) {
 
     dateSelect.querySelector("#date-selector").valueAsDate = new Date(date);
 
-    dateSelect.querySelector("#date-selector").addEventListener("change", function(){
+    dateSelect.querySelector("#date-selector").addEventListener("change", async function(){
         const newDate = document.querySelector("#date-selector").valueAsDate;
         window.sessionStorage.setItem("selected_date", newDate.toISOString().split("T")[0]);
-        showMeals(newDate);
+        date = newDate.toISOString().split("T")[0];
+        showMeals();
     });
 
     dailyCalories.querySelector("#daily-calories").innerHTML = `<h5> Total calories: ${dailyCaloriesTotal.toFixed(2)} kcal </h5>`;
