@@ -8,4 +8,8 @@ document.addEventListener("DOMContentLoaded", function() {
     {
         date = window.sessionStorage.getItem("selected_date");
     }
+	else
+	{
+		window.sessionStorage.setItem("selected_date", date);
+	}
 });
