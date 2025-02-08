@@ -244,7 +244,17 @@ async function showProducts(name="", receivedBarcode="") {
     const searchProductOptions = searchProductOptionsTemplate.content.cloneNode(true);
     searchProductOptions.querySelector("#scan-barcode-button").addEventListener("click", function()
     { 
-        scanBarcode(function(returnedBarcode) { showProducts(name="", returnedBarcode) });
+        scanBarcode(async function(returnedBarcode) {
+            const scannedProducts = await getProducts(name="", returnedBarcode);
+            if (scannedProducts.length === 1)
+            {
+                document.dispatchEvent(new CustomEvent("selected-product", {detail: {id: scannedProducts[0].id }}));
+            }
+            else
+            {
+                showProducts(name="", returnedBarcode);
+            }
+        });
     });
     searchProductOptions.querySelector("#add-product-button").addEventListener("click", function() { showAddProductForm(receivedBarcode=""); });
 
