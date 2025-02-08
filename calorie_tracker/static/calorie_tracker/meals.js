@@ -227,6 +227,7 @@ async function showMeals() {
         5: "Supper"
     }
 
+    history.pushState({}, "", "meals");
     const mealsDiv = document.querySelector("#meals-div");
     mealsDiv.innerHTML = `<div class="spinner-border" role="status"> <span class="sr-only"></span></div>`;
 
