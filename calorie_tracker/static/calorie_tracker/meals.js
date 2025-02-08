@@ -250,14 +250,8 @@ async function showMeals() {
 
         mealtimesAccordionItem.querySelector(".accordion-button").setAttribute("data-bs-target", `#mealtime-collapse-${mealtimeId}`);
         mealtimesAccordionItem.querySelector(".accordion-collapse").setAttribute("id", `mealtime-collapse-${mealtimeId}`);
-        
-        mealtimesAccordionItem.querySelector(".btn-add-meal").setAttribute("id", `add-meal-to-mealtime-${mealtimeId}`);
-
+    
         const mealtimeIdRequest = JSON.parse(JSON.stringify(mealtimeId));
-        mealtimesAccordionItem.querySelector(".btn-add-meal").addEventListener("click", function(event){
-             showAddMealProductSelection(mealtimeIdRequest);
-        })
-
         const mealsList = mealsListTemplate.content.cloneNode(true);
 
         let mealtimeCalories = 0
@@ -283,15 +277,23 @@ async function showMeals() {
 
         mealtimesAccordionItem.querySelector(".accordion-button").innerHTML = `
         <div class="container">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col">
                     ${mealTimes[mealtimeId]}
-                </div class="col">
+                </div>
                 <div class="col">
-                    ${mealtimeCalories.toFixed(2)} kcal
-                </div class="col">
+                        ${mealtimeCalories.toFixed(2)} kcal
+                </div>
+                <div class="col">
+                    <button class="btn btn-add-meal"><i class="bi bi-plus-circle fs-1"></i></button>
+                </div>
             </div>
         </div>`;
+
+        mealtimesAccordionItem.querySelector(".btn-add-meal").setAttribute("id", `add-meal-to-mealtime-${mealtimeId}`);
+        mealtimesAccordionItem.querySelector(".btn-add-meal").addEventListener("click", function(event){
+            showAddMealProductSelection(mealtimeIdRequest);
+       })
 
         mealtimesAccordionItem.querySelector(".accordion-body").append(mealsList);
         mealtimesAccordion.querySelector("#mealtimes-accordion").append(mealtimesAccordionItem);
