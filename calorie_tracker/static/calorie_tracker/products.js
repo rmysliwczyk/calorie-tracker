@@ -111,8 +111,8 @@ async function deleteProduct(productId) {
 
 async function scanBarcode(returnFunction) {
     showScanner("products-div");
-    document.addEventListener("barcode-scanned", function(event) {
-        html5QrcodeScanner.clear();
+    document.addEventListener("barcode-scanned", async function(event) {
+		await html5QrcodeScanner.clear();
         returnFunction(returnedBarcode=event.detail.barcode);
     }, {once: true});
 }

@@ -261,8 +261,8 @@ async function showMeals() {
                 const mealsListItem = mealsListItemTemplate.content.cloneNode(true);
                 mealsListItem.querySelector("#meal-id-INSERT_MEAL_ID").setAttribute("id", `meal-id-${meal.id}`);
                 const foodItem = await getFood(meal.food);
-                mealsListItem.querySelector("#product-name").textContent = foodItem.name;
-                mealsListItem.querySelector("#meal-nutritional-info").textContent = `kcal: ${meal.total_calories} fats: ${meal.total_fats} g carbs: ${meal.total_carbs} g proteins: ${meal.total_proteins} g`;
+                mealsListItem.querySelector("#product-name").textContent = `${foodItem.name} - ${meal.weight} g`;
+                mealsListItem.querySelector("#meal-nutritional-info").textContent = `kcal: ${meal.total_calories.toFixed(2)} f: ${meal.total_fats.toFixed(2)}g c: ${meal.total_carbs.toFixed(2)}g p: ${meal.total_proteins.toFixed(2)}g`;
                 
                 const mealId = meal.id
                 mealsListItem.querySelector("button").addEventListener("click", function eventHandler(event) {
@@ -282,7 +282,7 @@ async function showMeals() {
                     ${mealTimes[mealtimeId]}
                 </div>
                 <div class="col">
-                        ${mealtimeCalories.toFixed(2)} kcal
+                    ${mealtimeCalories.toFixed(2)} kcal
                 </div>
                 <div class="col">
                     <button class="btn btn-add-meal"><i class="bi bi-plus-circle fs-1"></i></button>
