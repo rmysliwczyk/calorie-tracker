@@ -34,6 +34,7 @@
                 <input type="submit" value="login">
             </div>
         </div>
+        <input type="hidden" name="next" value="{{ next }}">
     </form>
     <a href="{% url 'calorie_tracker:register' %}">Create a new user</a>
 
