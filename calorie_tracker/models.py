@@ -23,6 +23,7 @@ class Food(models.Model):
     carbs = PositiveDecimalField(max_digits=10, decimal_places=2) # g/100g
     proteins = PositiveDecimalField(max_digits=10, decimal_places=2) # g/100g
     portion_size = PositiveDecimalField(max_digits=10, decimal_places=2) # g
+    is_locked = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
