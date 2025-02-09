@@ -52,7 +52,7 @@ async function addProduct(product) {
             body: JSON.stringify(product)
         });
         if(!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
+            return null;
         }
 
         const productReceived = await response.json();
@@ -138,18 +138,22 @@ async function showEditProductForm(productId, receivedBarcode="") {
     editProductForm.querySelector("#product-carbs").value = product.carbs;
     editProductForm.querySelector("#product-proteins").value = product.proteins;
     editProductForm.querySelector("#product-portion-weight").value = product.portion_size;
-    
-    const removeProductButton = document.createElement("div");
-    removeProductButton.setAttribute("class", "col-3 p-2")
-    removeProductButton.innerHTML = `<button id="product-delete-button" class="btn btn-danger">Delete</button>`;
-    removeProductButton.addEventListener("click", function(event) {
-        event.preventDefault();
-        deleteProduct(productId).then(function() {
-            showProducts();
-        });
-    })
+   
+	if(product.is_locked == false)
+	{
+		const removeProductButton = document.createElement("div");
+		removeProductButton.setAttribute("class", "col-3 p-2")
+		removeProductButton.innerHTML = `<button id="product-delete-button" class="btn btn-danger">Delete</button>`;
+		removeProductButton.addEventListener("click", function(event) {
+			event.preventDefault();
+			deleteProduct(productId).then(function() {
+				showProducts();
+			});
+		})
 
-    editProductForm.querySelector("#form-buttons").prepend(removeProductButton);
+    	editProductForm.querySelector("#form-buttons").prepend(removeProductButton);
+	}
+
 
     if(receivedBarcode == "")
     {
@@ -223,9 +227,10 @@ async function showAddProductForm(receivedBarcode="") {
 
     addProductForm.querySelector("#product-form-submit-button").textContent = "Add product";
 
-    addProductForm.querySelector("#product-form").addEventListener("submit", function(event){
+	let result;
+    addProductForm.querySelector("#product-form").addEventListener("submit", async function(event){
         event.preventDefault();
-        addProduct({
+        result = await addProduct({
             name: document.querySelector("#product-name").value,
             calories: document.querySelector("#product-calories").value,
             fats: document.querySelector("#product-fats").value,
@@ -233,9 +238,15 @@ async function showAddProductForm(receivedBarcode="") {
             proteins: document.querySelector("#product-proteins").value,
             barcode: receivedBarcode,
             portion_size: document.querySelector("#product-portion-weight").value != "" ? document.querySelector("#product-portion-weight").value : 0
-        }).then( function(){
-            showProducts();
         });
+		if(result === null)
+		{
+			alert("Couldn't add product. Check input data and try again");
+		}
+		else
+		{
+			showProducts();
+		}
     });
 
     productsDiv.append(addProductForm);
