@@ -113,17 +113,22 @@ async function updateMeal(meal) {
     }
 }
 
+let listenerAttached = false;
 async function showAddMealProductSelection(mealtimeId) {
     const mealsDiv = document.querySelector("#meals-div");
     mealsDiv.innerHTML = `<div id="products-div"></div>`;
 
-
-    showProducts();
-    
-    document.addEventListener("selected-product", function(event){
-        showAddMealForm(event.detail.id, mealtimeId);
-        document.removeEventListener("selected-product", event);
-    }, {once: true});
+    await showProducts();
+	if(listenerAttached === false)
+	{
+		document.addEventListener("selected-product", function(event){
+			showAddMealForm(event.detail.id, mealtimeId);
+			history.pushState({"action": "addMealForm", "productId": event.detail.id, "mealtimeId": mealtimeId}, "", "meals");
+			document.removeEventListener("selected-product", event);
+			listenerAttached = false;
+		}, {once: true});
+		listenerAttached = true;
+	}
 }
 
 async function showAddMealForm(productId, mealtimeId) {
@@ -227,7 +232,6 @@ async function showMeals() {
         5: "Supper"
     }
 
-    history.pushState({}, "", "meals");
     const mealsDiv = document.querySelector("#meals-div");
     mealsDiv.innerHTML = `<div class="spinner-border" role="status"> <span class="sr-only"></span></div>`;
 
@@ -268,6 +272,7 @@ async function showMeals() {
                 const mealId = meal.id
                 mealsListItem.querySelector("button").addEventListener("click", function eventHandler(event) {
                     showEditMealForm(mealId);
+					history.pushState({"action": "editMealForm", "mealId": mealId}, "", "meals");
                 })
         
                 mealsList.querySelector("ul").append(mealsListItem);
@@ -294,6 +299,7 @@ async function showMeals() {
         mealtimesAccordionItem.querySelector(".btn-add-meal").setAttribute("id", `add-meal-to-mealtime-${mealtimeId}`);
         mealtimesAccordionItem.querySelector(".btn-add-meal").addEventListener("click", function(event){
             showAddMealProductSelection(mealtimeIdRequest);
+			history.pushState({"action": "showAddMealProductSelection", "mealtimeId": mealtimeId}, "", "meals");
        })
 
         mealtimesAccordionItem.querySelector(".accordion-body").append(mealsList);
@@ -330,6 +336,7 @@ async function showMeals() {
 
 document.addEventListener("DOMContentLoaded", function() {
 
+	history.replaceState({"action": "showMeals"}, "", "meals");
     showMeals().then(function(){
 
         document.addEventListener("show.bs.collapse", function(event){

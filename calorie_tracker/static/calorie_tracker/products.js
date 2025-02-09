@@ -115,6 +115,7 @@ async function scanBarcode(returnFunction) {
 		await html5QrcodeScanner.clear();
         returnFunction(returnedBarcode=event.detail.barcode);
     }, {once: true});
+
 }
 
 async function searchProducts(event) {
@@ -161,7 +162,9 @@ async function showEditProductForm(productId, receivedBarcode="") {
 
     editProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
         event.preventDefault();
-        scanBarcode(function(returnedBarcode) {showEditProductForm(productId, returnedBarcode)});
+		const returnFunction = function(returnedBarcode) {showEditProductForm(productId, returnedBarcode)};
+        scanBarcode(returnFunction);
+		history.pushState({"action": "scanBarcode"}, "", "products"); 
     });
 
     editProductForm.querySelector("#product-form-submit-button").textContent = "Update";
@@ -182,6 +185,7 @@ async function showEditProductForm(productId, receivedBarcode="") {
     });
 
     productsDiv.append(editProductForm);
+
 }
 
 async function showAddProductForm(receivedBarcode="") {
@@ -203,7 +207,8 @@ async function showAddProductForm(receivedBarcode="") {
         window.sessionStorage.setItem("carbs", document.querySelector("#product-carbs").value);
         window.sessionStorage.setItem("proteins", document.querySelector("#product-proteins").value);
         window.sessionStorage.setItem("portion_size", document.querySelector("#product-portion-weight").value)
-        scanBarcode(async function(returnedBarcode) {
+
+		const returnFunction = async function(returnedBarcode) {
             await showAddProductForm(returnedBarcode);
             document.querySelector("#product-name").value = window.sessionStorage.getItem("name");
             document.querySelector("#product-calories").value =  window.sessionStorage.getItem("calories");
@@ -211,7 +216,9 @@ async function showAddProductForm(receivedBarcode="") {
             document.querySelector("#product-carbs").value = window.sessionStorage.getItem("carbs");
             document.querySelector("#product-proteins").value = window.sessionStorage.getItem("proteins");
             document.querySelector("#product-portion-weight").value = window.sessionStorage.getItem("portion_size");
-        });
+        }
+        scanBarcode(returnFunction);
+		history.pushState({"action": "scanBarcode"}, "", "products"); 
     });
 
     addProductForm.querySelector("#product-form-submit-button").textContent = "Add product";
@@ -232,6 +239,7 @@ async function showAddProductForm(receivedBarcode="") {
     });
 
     productsDiv.append(addProductForm);
+
 }
 
 async function showProducts(name="", receivedBarcode="") {
@@ -243,8 +251,8 @@ async function showProducts(name="", receivedBarcode="") {
     const searchProductOptionsTemplate = document.querySelector("#search-product-options-template");
     const searchProductOptions = searchProductOptionsTemplate.content.cloneNode(true);
     searchProductOptions.querySelector("#scan-barcode-button").addEventListener("click", function()
-    { 
-        scanBarcode(async function(returnedBarcode) {
+    {
+		const returnFunction = async function(returnedBarcode) {
             const scannedProducts = await getProducts(name="", returnedBarcode);
             if (scannedProducts.length === 1)
             {
@@ -254,9 +262,15 @@ async function showProducts(name="", receivedBarcode="") {
             {
                 showProducts(name="", returnedBarcode);
             }
-        });
+        }
+
+        scanBarcode(returnFunction);
+		history.pushState({"action": "scanBarcode"}, "", "products"); 
     });
-    searchProductOptions.querySelector("#add-product-button").addEventListener("click", function() { showAddProductForm(receivedBarcode=""); });
+    searchProductOptions.querySelector("#add-product-button").addEventListener("click", function() { 
+		showAddProductForm(receivedBarcode=""); 
+		history.pushState({"action": "addProductForm", "receivedBarcode": ""}, "", "products");
+	});
 
     let timeOut;
     searchProductOptions.querySelector("#food-search-input").value = name;
@@ -296,9 +310,10 @@ document.addEventListener("DOMContentLoaded", function() {
     if(document.querySelector("#products-div") != null)
     {
         showProducts();
-
+		history.replaceState({"action": "showProducts", "name": "", "receivedBarcode": ""}, "", "products");
         document.addEventListener("selected-product", function(event){
             showEditProductForm(event.detail.id);
+			history.pushState({"action": "editProductForm", "productId": event.detail.id, "receivedBarcode": ""}, "", "products");
             document.removeEventListener("selected-product", event);
         });
     }
