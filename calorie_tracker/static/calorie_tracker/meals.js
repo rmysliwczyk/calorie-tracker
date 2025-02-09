@@ -299,7 +299,7 @@ async function showMeals() {
         mealtimesAccordionItem.querySelector(".btn-add-meal").setAttribute("id", `add-meal-to-mealtime-${mealtimeId}`);
         mealtimesAccordionItem.querySelector(".btn-add-meal").addEventListener("click", function(event){
             showAddMealProductSelection(mealtimeIdRequest);
-			history.pushState({"action": "showAddMealProductSelection", "mealtimeId": mealtimeId}, "", "meals");
+			history.pushState({"action": "showAddMealProductSelection", "mealtimeId": mealtimeIdRequest}, "", "meals");
        })
 
         mealtimesAccordionItem.querySelector(".accordion-body").append(mealsList);
