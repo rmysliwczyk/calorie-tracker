@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -76,8 +76,26 @@ class MealViewSet(viewsets.ModelViewSet):
     filterset_class = MealFilter
     filter_backends = [filters.DjangoFilterBackend]
 
+    def list(self, request):
+        queryset = Meal.objects.filter(user=request.user)
+        serializer = MealSerializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    def retrieve(self, request, pk=None):
+        queryset = Meal.objects.filter(user=request.user)
+        meal = get_object_or_404(queryset, pk=pk)
+        serializer = MealSerializer(meal)
+        return Response(serializer.data)
+    
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def destroy(self, request, pk=None):
+        obj = self.get_object()
+        if obj.user != self.request.user:
+            return Response(data={'message': "This meal can only be deleted by owner"}, status=status.HTTP_403_FORBIDDEN)
+        self.perform_destroy(obj)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @login_required
@@ -87,6 +105,7 @@ def index(request):
 def products(request):
     return render(request, "calorie_tracker/products.html")
 
+@login_required
 def meals(request):
     return render(request, "calorie_tracker/meals.html")
 
