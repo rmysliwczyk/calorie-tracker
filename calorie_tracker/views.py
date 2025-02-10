@@ -38,19 +38,26 @@ class FoodViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
 
-    def destroy(self, request, pk=None):
-        obj = self.get_object()
-        if obj.is_locked:
-            return Response(data={'message': "This product is locked and cannot be deleted"})
-        self.perform_destroy(obj)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [filters.DjangoFilterBackend]
     filterset_class = ProductFilter
+
+    def destroy(self, request, pk=None):
+        obj = self.get_object()
+        if obj.is_locked:
+            return Response(data={'message': "This product is locked and cannot be deleted"}, status=status.HTTP_403_FORBIDDEN)
+        self.perform_destroy(obj)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def partial_update(self, request, pk=None):
+        obj = self.get_object()
+        if obj.is_locked:
+            return Response(data={'message': "This product is locked and cannot be updated"}, status=status.HTTP_403_FORBIDDEN)
+        self.perform_update(obj)
+        return Response(status=status.HTTP_200_OK)
 
 class IngredientViewSet(viewsets.ModelViewSet):
     queryset = Ingredient.objects.all()

@@ -92,7 +92,7 @@ async function deleteProduct(productId) {
     try {
         let url = `api/products/${productId}/`;
         const response = await fetch(url, {
-            method: "delete",
+            method: "DELETE",
             credentials: "same-origin",
             headers: {
                 "X-CSRFToken": csrftoken,
@@ -152,7 +152,37 @@ async function showEditProductForm(productId, receivedBarcode="") {
 		})
 
     	editProductForm.querySelector("#form-buttons").prepend(removeProductButton);
+
+        editProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
+            event.preventDefault();
+            const returnFunction = function(returnedBarcode) {showEditProductForm(productId, returnedBarcode)};
+            scanBarcode(returnFunction);
+            history.pushState({"action": "scanBarcode"}, "", "products"); 
+        });
+
+        editProductForm.querySelector("#product-form-submit-button").textContent = "Update";
+
+        editProductForm.querySelector("#product-form-submit-button").addEventListener("click", async function(event){
+            event.preventDefault();
+            await updateProduct({
+                id: productId,
+                name: document.querySelector("#product-name").value,
+                calories: document.querySelector("#product-calories").value,
+                fats: document.querySelector("#product-fats").value,
+                carbs: document.querySelector("#product-carbs").value,
+                proteins: document.querySelector("#product-proteins").value,
+                barcode: receivedBarcode != "" ? receivedBarcode : document.querySelector("#product-barcode").value,
+                portion_size: document.querySelector("#product-portion-weight").value != "" ? document.querySelector("#product-portion-weight").value : 0
+            });
+            showProducts();
+        });
+
 	}
+    else
+    {
+        editProductForm.querySelectorAll("input").forEach(function(element){ element.setAttribute("disabled", "")});
+        editProductForm.querySelector("#form-buttons").remove();
+    }
 
 
     if(receivedBarcode == "")
@@ -163,30 +193,6 @@ async function showEditProductForm(productId, receivedBarcode="") {
     {
         editProductForm.querySelector("#product-barcode").value = receivedBarcode;
     }
-
-    editProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
-        event.preventDefault();
-		const returnFunction = function(returnedBarcode) {showEditProductForm(productId, returnedBarcode)};
-        scanBarcode(returnFunction);
-		history.pushState({"action": "scanBarcode"}, "", "products"); 
-    });
-
-    editProductForm.querySelector("#product-form-submit-button").textContent = "Update";
-
-    editProductForm.querySelector("#product-form-submit-button").addEventListener("click", async function(event){
-        event.preventDefault();
-        await updateProduct({
-            id: productId,
-            name: document.querySelector("#product-name").value,
-            calories: document.querySelector("#product-calories").value,
-            fats: document.querySelector("#product-fats").value,
-            carbs: document.querySelector("#product-carbs").value,
-            proteins: document.querySelector("#product-proteins").value,
-            barcode: receivedBarcode != "" ? receivedBarcode : document.querySelector("#product-barcode").value,
-            portion_size: document.querySelector("#product-portion-weight").value != "" ? document.querySelector("#product-portion-weight").value : 0
-        });
-        showProducts();
-    });
 
     productsDiv.append(editProductForm);
 
