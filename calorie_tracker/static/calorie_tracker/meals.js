@@ -1,17 +1,16 @@
 let openedMealtime = "";
 
-async function getMeals(date="") {
+async function getMeals(date = "") {
     try {
         let url = `api/meals/?date=${date}`;
         const response = await fetch(url);
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const meals = await response.json();
-        return meals;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -20,14 +19,13 @@ async function getMeal(mealId) {
     try {
         let url = `api/meals/${mealId}`;
         const response = await fetch(url);
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const meal = await response.json();
-        return meal;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -44,11 +42,11 @@ async function deleteMeal(mealId) {
                 "Content-Type": "application/json"
             }
         });
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -57,14 +55,13 @@ async function getFood(foodId) {
     try {
         let url = `api/foods/${foodId}`;
         const response = await fetch(url);
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const food = await response.json();
-        return food;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -83,10 +80,9 @@ async function addMeal(meal) {
             body: JSON.stringify(meal)
         });
 
-        const meals = await response.json();
-        return meals;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error)
     }
 }
@@ -105,10 +101,9 @@ async function updateMeal(meal) {
             body: JSON.stringify(meal)
         });
 
-        const responseJson = await response.json();
-        return responseJson;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error)
     }
 }
@@ -119,16 +114,15 @@ async function showAddMealProductSelection(mealtimeId) {
     mealsDiv.innerHTML = `<div id="products-div"></div>`;
 
     await showProducts();
-	if(listenerAttached === false)
-	{
-		document.addEventListener("selected-product", function(event){
-			showAddMealForm(event.detail.id, mealtimeId);
-			history.pushState({"action": "addMealForm", "productId": event.detail.id, "mealtimeId": mealtimeId}, "", "meals");
-			document.removeEventListener("selected-product", event);
-			listenerAttached = false;
-		}, {once: true});
-		listenerAttached = true;
-	}
+    if (listenerAttached === false) {
+        document.addEventListener("selected-product", function (event) {
+            showAddMealForm(event.detail.id, mealtimeId);
+            history.pushState({ "action": "addMealForm", "productId": event.detail.id, "mealtimeId": mealtimeId }, "", "meals");
+            document.removeEventListener("selected-product", event);
+            listenerAttached = false;
+        }, { once: true });
+        listenerAttached = true;
+    }
 }
 
 async function showAddMealForm(productId, mealtimeId) {
@@ -147,11 +141,11 @@ async function showAddMealForm(productId, mealtimeId) {
     nutritionalValuesData[3].textContent = selectedFood.proteins;
 
 
-    addMealForm.querySelector("#meal-weight").addEventListener("input", function(event) {
+    addMealForm.querySelector("#meal-weight").addEventListener("input", function (event) {
         document.querySelector("#meal-calories").value = (event.target.value * selectedFood.calories / 100).toFixed(2) + " kcal";
     });
 
-    addMealForm.querySelector("#meal-form").addEventListener("submit", async function(event){
+    addMealForm.querySelector("#meal-form").addEventListener("submit", async function (event) {
         event.preventDefault();
 
         document.querySelector("#meal-calories").value;
@@ -189,22 +183,22 @@ async function showEditMealForm(mealId) {
     editMealForm.querySelector("#meal-calories").value = meal.total_calories;
     editMealForm.querySelector("#meal-add-button").setAttribute("id", "meal-edit-button");
     editMealForm.querySelector("#meal-edit-button").textContent = "Edit meal"
-    
+
     const removeMealButton = document.createElement("div");
     removeMealButton.setAttribute("class", "col-4 p-2")
     removeMealButton.innerHTML = `<button id="meal-delete-button" class="btn btn-danger">Delete meal</button>`;
-    removeMealButton.addEventListener("click", async function(event) {
+    removeMealButton.addEventListener("click", async function (event) {
         event.preventDefault();
         await deleteMeal(mealId);
         showMeals();
     })
     editMealForm.querySelector("#form-buttons").append(removeMealButton);
 
-    editMealForm.querySelector("#meal-weight").addEventListener("input", function(event) {
+    editMealForm.querySelector("#meal-weight").addEventListener("input", function (event) {
         document.querySelector("#meal-calories").value = (event.target.value * food.calories / 100).toFixed(2) + " kcal";
     });
 
-    editMealForm.querySelector("#meal-form").addEventListener("submit", async function(event){
+    editMealForm.querySelector("#meal-form").addEventListener("submit", async function (event) {
         event.preventDefault();
 
         document.querySelector("#meal-calories").value;
@@ -236,7 +230,7 @@ async function showMeals() {
     mealsDiv.innerHTML = `<div class="spinner-border" role="status"> <span class="sr-only"></span></div>`;
 
     const meals = await getMeals(date);
-    
+
     const mealtimesAccordionTemplate = document.querySelector("#mealtimes-accordion-template");
     const mealtimesAccordionItemTemplate = document.querySelector("#mealtimes-accordion-item-template");
     const mealsListTemplate = document.querySelector("#meals-list-template");
@@ -248,33 +242,31 @@ async function showMeals() {
 
 
     let dailyCaloriesTotal = 0;
-    for(mealtimeId in mealTimes)
-    {
+    for (mealtimeId in mealTimes) {
         const mealtimesAccordionItem = mealtimesAccordionItemTemplate.content.cloneNode(true);
         mealtimesAccordionItem.querySelector("#mealtime-id-INSERT_MEALTIME_NUMBER").setAttribute("id", `mealtime-id-${mealtimeId}`);
 
         mealtimesAccordionItem.querySelector(".accordion-button").setAttribute("data-bs-target", `#mealtime-collapse-${mealtimeId}`);
         mealtimesAccordionItem.querySelector(".accordion-collapse").setAttribute("id", `mealtime-collapse-${mealtimeId}`);
-    
+
         const mealtimeIdRequest = JSON.parse(JSON.stringify(mealtimeId));
         const mealsList = mealsListTemplate.content.cloneNode(true);
 
         let mealtimeCalories = 0
-        for (var meal of meals){
-            if(meal.meal_time == mealtimeId)
-            {
+        for (var meal of meals) {
+            if (meal.meal_time == mealtimeId) {
                 const mealsListItem = mealsListItemTemplate.content.cloneNode(true);
                 mealsListItem.querySelector("#meal-id-INSERT_MEAL_ID").setAttribute("id", `meal-id-${meal.id}`);
                 const foodItem = await getFood(meal.food);
                 mealsListItem.querySelector("#product-name").textContent = `${foodItem.name} - ${meal.weight} g`;
                 mealsListItem.querySelector("#meal-nutritional-info").textContent = `kcal: ${meal.total_calories.toFixed(2)} f: ${meal.total_fats.toFixed(2)}g c: ${meal.total_carbs.toFixed(2)}g p: ${meal.total_proteins.toFixed(2)}g`;
-                
+
                 const mealId = meal.id
                 mealsListItem.querySelector("button").addEventListener("click", function eventHandler(event) {
                     showEditMealForm(mealId);
-					history.pushState({"action": "editMealForm", "mealId": mealId}, "", "meals");
+                    history.pushState({ "action": "editMealForm", "mealId": mealId }, "", "meals");
                 })
-        
+
                 mealsList.querySelector("ul").append(mealsListItem);
 
                 mealtimeCalories += meal.total_calories;
@@ -297,10 +289,10 @@ async function showMeals() {
         </div>`;
 
         mealtimesAccordionItem.querySelector(".btn-add-meal").setAttribute("id", `add-meal-to-mealtime-${mealtimeId}`);
-        mealtimesAccordionItem.querySelector(".btn-add-meal").addEventListener("click", function(event){
+        mealtimesAccordionItem.querySelector(".btn-add-meal").addEventListener("click", function (event) {
             showAddMealProductSelection(mealtimeIdRequest);
-			history.pushState({"action": "showAddMealProductSelection", "mealtimeId": mealtimeIdRequest}, "", "meals");
-       })
+            history.pushState({ "action": "showAddMealProductSelection", "mealtimeId": mealtimeIdRequest }, "", "meals");
+        })
 
         mealtimesAccordionItem.querySelector(".accordion-body").append(mealsList);
         mealtimesAccordion.querySelector("#mealtimes-accordion").append(mealtimesAccordionItem);
@@ -315,7 +307,7 @@ async function showMeals() {
 
     dateSelect.querySelector("#date-selector").valueAsDate = new Date(date);
 
-    dateSelect.querySelector("#date-selector").addEventListener("change", async function(){
+    dateSelect.querySelector("#date-selector").addEventListener("change", async function () {
         const newDate = document.querySelector("#date-selector").valueAsDate;
         window.sessionStorage.setItem("selected_date", newDate.toISOString().split("T")[0]);
         date = newDate.toISOString().split("T")[0];
@@ -328,18 +320,17 @@ async function showMeals() {
     mealsDiv.append(dailyCalories);
     mealsDiv.append(mealtimesAccordion);
 
-    if (openedMealtime != "")
-    {
+    if (openedMealtime != "") {
         document.querySelector(`#${openedMealtime}`).classList.add("show");
     }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
 
-	history.replaceState({"action": "showMeals"}, "", "meals");
-    showMeals().then(function(){
+    history.replaceState({ "action": "showMeals" }, "", "meals");
+    showMeals().then(function () {
 
-        document.addEventListener("show.bs.collapse", function(event){
+        document.addEventListener("show.bs.collapse", function (event) {
             openedMealtime = event.target.id;
         });
     });

@@ -1,4 +1,4 @@
-async function getProducts(name="", barcode="") {
+async function getProducts(name = "", barcode = "") {
     try {
         let url = `api/products/?name__contains=${name}&barcode__contains=${barcode}`;
         const response = await fetch(url, {
@@ -10,14 +10,13 @@ async function getProducts(name="", barcode="") {
                 "Content-Type": "application/json"
             }
         });
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const products = await response.json();
-        return products;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -26,14 +25,13 @@ async function getProduct(productId) {
     try {
         let url = `api/products/${productId}`;
         const response = await fetch(url);
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const product = await response.json();
-        return product;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -51,14 +49,14 @@ async function addProduct(product) {
             },
             body: JSON.stringify(product)
         });
-        if(!response.ok) {
+
+        if (!response.ok) {
             return null;
         }
 
-        const productReceived = await response.json();
-        return productReceived;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -76,14 +74,13 @@ async function updateProduct(product) {
             },
             body: JSON.stringify(product)
         });
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
 
-        const productReceived = await response.json();
-        return productReceived;
+        return await response.json();
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
@@ -100,21 +97,21 @@ async function deleteProduct(productId) {
                 "Content-Type": "application/json"
             }
         });
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error(`Response status: ${response.status}`);
         }
     }
-    catch(error) {
+    catch (error) {
         console.log(error.message)
     }
 }
 
 async function scanBarcode(returnFunction) {
     showScanner("products-div");
-    document.addEventListener("barcode-scanned", async function(event) {
-		await html5QrcodeScanner.clear();
-        returnFunction(returnedBarcode=event.detail.barcode);
-    }, {once: true});
+    document.addEventListener("barcode-scanned", async function (event) {
+        await html5QrcodeScanner.clear();
+        returnFunction(returnedBarcode = event.detail.barcode);
+    }, { once: true });
 
 }
 
@@ -122,7 +119,7 @@ async function searchProducts(event) {
     showProducts(event.target.value);
 }
 
-async function showEditProductForm(productId, receivedBarcode="") {
+async function showEditProductForm(productId, receivedBarcode = "") {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
     productsDiv.setAttribute("style", "");
@@ -138,31 +135,30 @@ async function showEditProductForm(productId, receivedBarcode="") {
     editProductForm.querySelector("#product-carbs").value = product.carbs;
     editProductForm.querySelector("#product-proteins").value = product.proteins;
     editProductForm.querySelector("#product-portion-weight").value = product.portion_size;
-   
-	if(product.is_locked == false)
-	{
-		const removeProductButton = document.createElement("div");
-		removeProductButton.setAttribute("class", "col-3 p-2")
-		removeProductButton.innerHTML = `<button id="product-delete-button" class="btn btn-danger">Delete</button>`;
-		removeProductButton.addEventListener("click", function(event) {
-			event.preventDefault();
-			deleteProduct(productId).then(function() {
-				showProducts();
-			});
-		})
 
-    	editProductForm.querySelector("#form-buttons").prepend(removeProductButton);
-
-        editProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
+    if (product.is_locked == false) {
+        const removeProductButton = document.createElement("div");
+        removeProductButton.setAttribute("class", "col-3 p-2")
+        removeProductButton.innerHTML = `<button id="product-delete-button" class="btn btn-danger">Delete</button>`;
+        removeProductButton.addEventListener("click", function (event) {
             event.preventDefault();
-            const returnFunction = function(returnedBarcode) {showEditProductForm(productId, returnedBarcode)};
+            deleteProduct(productId).then(function () {
+                showProducts();
+            });
+        })
+
+        editProductForm.querySelector("#form-buttons").prepend(removeProductButton);
+
+        editProductForm.querySelector("#scan-product-button").addEventListener("click", function (event) {
+            event.preventDefault();
+            const returnFunction = function (returnedBarcode) { showEditProductForm(productId, returnedBarcode) };
             scanBarcode(returnFunction);
-            history.pushState({"action": "scanBarcode"}, "", "products"); 
+            history.pushState({ "action": "scanBarcode" }, "", "products");
         });
 
         editProductForm.querySelector("#product-form-submit-button").textContent = "Update";
 
-        editProductForm.querySelector("#product-form-submit-button").addEventListener("click", async function(event){
+        editProductForm.querySelector("#product-form-submit-button").addEventListener("click", async function (event) {
             event.preventDefault();
             await updateProduct({
                 id: productId,
@@ -177,20 +173,17 @@ async function showEditProductForm(productId, receivedBarcode="") {
             showProducts();
         });
 
-	}
-    else
-    {
-        editProductForm.querySelectorAll("input").forEach(function(element){ element.setAttribute("disabled", "")});
+    }
+    else {
+        editProductForm.querySelectorAll("input").forEach(function (element) { element.setAttribute("disabled", "") });
         editProductForm.querySelector("#form-buttons").remove();
     }
 
 
-    if(receivedBarcode == "")
-    {
+    if (receivedBarcode == "") {
         editProductForm.querySelector("#product-barcode").value = product.barcode;
     }
-    else
-    {
+    else {
         editProductForm.querySelector("#product-barcode").value = receivedBarcode;
     }
 
@@ -198,18 +191,18 @@ async function showEditProductForm(productId, receivedBarcode="") {
 
 }
 
-async function showAddProductForm(receivedBarcode="") {
+async function showAddProductForm(receivedBarcode = "") {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
     productsDiv.setAttribute("style", "");
-    
+
     const addProductFormTemplate = document.querySelector("#product-form-template");
 
     const addProductForm = addProductFormTemplate.content.cloneNode(true);
     addProductForm.querySelector("#product-barcode").value = receivedBarcode;
 
 
-    addProductForm.querySelector("#scan-product-button").addEventListener("click", function(event){
+    addProductForm.querySelector("#scan-product-button").addEventListener("click", function (event) {
         event.preventDefault();
         window.sessionStorage.setItem("name", document.querySelector("#product-name").value);
         window.sessionStorage.setItem("calories", document.querySelector("#product-calories").value);
@@ -218,23 +211,23 @@ async function showAddProductForm(receivedBarcode="") {
         window.sessionStorage.setItem("proteins", document.querySelector("#product-proteins").value);
         window.sessionStorage.setItem("portion_size", document.querySelector("#product-portion-weight").value)
 
-		const returnFunction = async function(returnedBarcode) {
+        const returnFunction = async function (returnedBarcode) {
             await showAddProductForm(returnedBarcode);
             document.querySelector("#product-name").value = window.sessionStorage.getItem("name");
-            document.querySelector("#product-calories").value =  window.sessionStorage.getItem("calories");
+            document.querySelector("#product-calories").value = window.sessionStorage.getItem("calories");
             document.querySelector("#product-fats").value = window.sessionStorage.getItem("fats");
             document.querySelector("#product-carbs").value = window.sessionStorage.getItem("carbs");
             document.querySelector("#product-proteins").value = window.sessionStorage.getItem("proteins");
             document.querySelector("#product-portion-weight").value = window.sessionStorage.getItem("portion_size");
         }
         scanBarcode(returnFunction);
-		history.pushState({"action": "scanBarcode"}, "", "products"); 
+        history.pushState({ "action": "scanBarcode" }, "", "products");
     });
 
     addProductForm.querySelector("#product-form-submit-button").textContent = "Add product";
 
-	let result;
-    addProductForm.querySelector("#product-form").addEventListener("submit", async function(event){
+    let result;
+    addProductForm.querySelector("#product-form").addEventListener("submit", async function (event) {
         event.preventDefault();
         result = await addProduct({
             name: document.querySelector("#product-name").value,
@@ -245,21 +238,19 @@ async function showAddProductForm(receivedBarcode="") {
             barcode: receivedBarcode,
             portion_size: document.querySelector("#product-portion-weight").value != "" ? document.querySelector("#product-portion-weight").value : 0
         });
-		if(result === null)
-		{
-			alert("Couldn't add product. Check input data and try again");
-		}
-		else
-		{
-			showProducts();
-		}
+        if (result === null) {
+            alert("Couldn't add product. Check input data and try again");
+        }
+        else {
+            showProducts();
+        }
     });
 
     productsDiv.append(addProductForm);
 
 }
 
-async function showProducts(name="", receivedBarcode="") {
+async function showProducts(name = "", receivedBarcode = "") {
     const productsDiv = document.querySelector("#products-div");
     productsDiv.innerHTML = "";
     productsDiv.setAttribute("style", "");
@@ -267,33 +258,30 @@ async function showProducts(name="", receivedBarcode="") {
 
     const searchProductOptionsTemplate = document.querySelector("#search-product-options-template");
     const searchProductOptions = searchProductOptionsTemplate.content.cloneNode(true);
-    searchProductOptions.querySelector("#scan-barcode-button").addEventListener("click", function()
-    {
-		const returnFunction = async function(returnedBarcode) {
-            const scannedProducts = await getProducts(name="", returnedBarcode);
-            if (scannedProducts.length === 1)
-            {
-                document.dispatchEvent(new CustomEvent("selected-product", {detail: {id: scannedProducts[0].id }}));
+    searchProductOptions.querySelector("#scan-barcode-button").addEventListener("click", function () {
+        const returnFunction = async function (returnedBarcode) {
+            const scannedProducts = await getProducts(name = "", returnedBarcode);
+            if (scannedProducts.length === 1) {
+                document.dispatchEvent(new CustomEvent("selected-product", { detail: { id: scannedProducts[0].id } }));
             }
-            else
-            {
-                showProducts(name="", returnedBarcode);
+            else {
+                showProducts(name = "", returnedBarcode);
             }
         }
 
         scanBarcode(returnFunction);
-		history.pushState({"action": "scanBarcode"}, "", "products"); 
+        history.pushState({ "action": "scanBarcode" }, "", "products");
     });
-    searchProductOptions.querySelector("#add-product-button").addEventListener("click", function() { 
-		showAddProductForm(receivedBarcode=""); 
-		history.pushState({"action": "addProductForm", "receivedBarcode": ""}, "", "products");
-	});
+    searchProductOptions.querySelector("#add-product-button").addEventListener("click", function () {
+        showAddProductForm(receivedBarcode = "");
+        history.pushState({ "action": "addProductForm", "receivedBarcode": "" }, "", "products");
+    });
 
     let timeOut;
     searchProductOptions.querySelector("#food-search-input").value = name;
-    searchProductOptions.querySelector("#food-search-input").addEventListener("input", function(event) {
+    searchProductOptions.querySelector("#food-search-input").addEventListener("input", function (event) {
         clearTimeout(timeOut);
-        timeOut = setTimeout(function() {searchProducts(event)}, 500);
+        timeOut = setTimeout(function () { searchProducts(event) }, 500);
     });
 
     productsDiv.append(searchProductOptions);
@@ -305,15 +293,15 @@ async function showProducts(name="", receivedBarcode="") {
     const productsListItem = productsListItemTemplate.content.cloneNode(true);
 
 
-    for (var product of products){
+    for (var product of products) {
         const productLi = productsListItem.querySelector("#product").cloneNode(true);
         productLi.setAttribute("id", `product-id-${product.id}`);
         productLi.querySelector("#product-name").textContent = `${product.name}`;
         productLi.querySelector("#product-calories").textContent = `${product.calories} kcal/100g`;
-        
+
         const productId = product.id;
         productLi.addEventListener("click", function eventHandler() {
-            document.dispatchEvent(new CustomEvent("selected-product", {detail: {id: productId }}));
+            document.dispatchEvent(new CustomEvent("selected-product", { detail: { id: productId } }));
         })
 
         productsList.querySelector("ul").append(productLi);
@@ -323,14 +311,13 @@ async function showProducts(name="", receivedBarcode="") {
     document.querySelector("#food-search-input").focus();
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-    if(document.querySelector("#products-div") != null)
-    {
+document.addEventListener("DOMContentLoaded", function () {
+    if (document.querySelector("#products-div") != null) {
         showProducts();
-		history.replaceState({"action": "showProducts", "name": "", "receivedBarcode": ""}, "", "products");
-        document.addEventListener("selected-product", function(event){
+        history.replaceState({ "action": "showProducts", "name": "", "receivedBarcode": "" }, "", "products");
+        document.addEventListener("selected-product", function (event) {
             showEditProductForm(event.detail.id);
-			history.pushState({"action": "editProductForm", "productId": event.detail.id, "receivedBarcode": ""}, "", "products");
+            history.pushState({ "action": "editProductForm", "productId": event.detail.id, "receivedBarcode": "" }, "", "products");
             document.removeEventListener("selected-product", event);
         });
     }

@@ -3,8 +3,6 @@ from django.urls import reverse
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.http.response import HttpResponse, JsonResponse
-from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.forms import ModelForm
 from .models import Product, Meal, Food
 from .serializers import *
@@ -108,20 +106,6 @@ def products(request):
 @login_required
 def meals(request):
     return render(request, "calorie_tracker/meals.html")
-
-def add_product(request):
-    if request.method == "POST":
-        # Get submitted product data 
-        form = ProductForm(request.POST)
-        if form.is_valid():
-            form.save(commit=True)
-            return redirect(reverse("calorie_tracker:products"))
-        else:
-            # Pass the form again including error message
-            return render(request, "calorie_tracker/add_product.html", {"product_form":form})
-            
-    # Pass the form for the first time
-    return render(request, "calorie_tracker/add_product.html", {"product_form":ProductForm()})
 
 def register(request):
     if request.method == "POST":
