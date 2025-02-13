@@ -148,7 +148,7 @@ async function showAddMealForm(productId, mealtimeId) {
 
 
     addMealForm.querySelector("#meal-weight").addEventListener("input", function(event) {
-        document.querySelector("#meal-calories").value = event.target.value * selectedFood.calories / 100 + " kcal";
+        document.querySelector("#meal-calories").value = (event.target.value * selectedFood.calories / 100).toFixed(2) + " kcal";
     });
 
     addMealForm.querySelector("#meal-form").addEventListener("submit", async function(event){
@@ -201,7 +201,7 @@ async function showEditMealForm(mealId) {
     editMealForm.querySelector("#form-buttons").append(removeMealButton);
 
     editMealForm.querySelector("#meal-weight").addEventListener("input", function(event) {
-        document.querySelector("#meal-calories").value = event.target.value * food.calories / 100 + " kcal";
+        document.querySelector("#meal-calories").value = (event.target.value * food.calories / 100).toFixed(2) + " kcal";
     });
 
     editMealForm.querySelector("#meal-form").addEventListener("submit", async function(event){
