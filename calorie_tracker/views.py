@@ -76,11 +76,14 @@ class MealViewSet(viewsets.ModelViewSet):
 
     def list(self, request):
         queryset = Meal.objects.filter(user=request.user)
+        queryset = self.filter_queryset(queryset)
+        
         serializer = MealSerializer(queryset, many=True)
         return Response(serializer.data)
     
     def retrieve(self, request, pk=None):
         queryset = Meal.objects.filter(user=request.user)
+        queryset = self.filter_queryset(queryset)
         meal = get_object_or_404(queryset, pk=pk)
         serializer = MealSerializer(meal)
         return Response(serializer.data)
