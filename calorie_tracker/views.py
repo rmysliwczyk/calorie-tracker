@@ -3,18 +3,12 @@ from django.urls import reverse
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from django.forms import ModelForm
 from .models import Product, Meal, Food
 from .serializers import *
 from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from django_filters import DateFilter
-
-class ProductForm(ModelForm):
-    class Meta:
-        model = Product
-        fields = "__all__"
 
 class ProductFilter(filters.FilterSet):
     class Meta:
