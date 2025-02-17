@@ -9,12 +9,10 @@ Test it [here](https://calorie-tracker.webredirect.org)
 This web application enables users to monitor their caloric intake by logging their daily meals. The main feature of the app is a database that users can update with their favorite food products. For each product, the database stores essential nutritional values per 100 grams, including calories, fats, carbohydrates, and proteins. Users can add their products and search for them using a responsive search function or by scanning product barcodes.
 
 ## Tech stack
-Django
-Django Rest Framework
-SQLite
-bootstrap
-nginx
-uWsgi
+- Django
+- Django Rest Framework
+- SQLite
+- bootstrap
 
 ## How to Run the Application locally
 Make sure you have Python 3, PIP, and the Python venv installed on your system. For Debian-based systems, you can ensure you have everything you need by entering the following command:
