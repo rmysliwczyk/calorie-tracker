@@ -48,7 +48,7 @@ class ProductViewSet(viewsets.ModelViewSet):
         obj = self.get_object()
         if obj.is_locked:
             return Response(data={'message': "This product is locked and cannot be updated"}, status=status.HTTP_403_FORBIDDEN)
-        self.perform_update(obj)
+        self.update(serializer=ProductSerializer, instance=obj, request=request)
         return Response(status=status.HTTP_200_OK)
 
 class IngredientViewSet(viewsets.ModelViewSet):
