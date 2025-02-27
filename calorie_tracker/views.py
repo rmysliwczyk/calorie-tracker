@@ -44,11 +44,18 @@ class ProductViewSet(viewsets.ModelViewSet):
         self.perform_destroy(obj)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def partial_update(self, request, pk=None):
-        obj = self.get_object()
-        if obj.is_locked:
-            return Response(data={'message': "This product is locked and cannot be updated"}, status=status.HTTP_403_FORBIDDEN)
-        self.update(serializer=ProductSerializer, instance=obj, request=request)
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        if request.user.is_staff == False:
+            if instance.is_locked:
+                return Response(data={'message': "This product is locked and cannot be updated by regular user"}, status=status.HTTP_403_FORBIDDEN)
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
         return Response(status=status.HTTP_200_OK)
 
 class IngredientViewSet(viewsets.ModelViewSet):
