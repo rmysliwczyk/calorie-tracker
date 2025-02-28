@@ -7,3 +7,5 @@ pyvenv.cfg
 __pycache__
 db.sqlite3
 secret_key.txt
+npm_lib
+node_modules

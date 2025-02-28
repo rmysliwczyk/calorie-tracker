@@ -1,0 +1,30 @@
+{
+  "name": "calorie-tracker",
+  "version": "1.0.0",
+  "description": "Test it [here](https://calorie-tracker.webredirect.org)",
+  "private": true,
+  "type": "module",
+  "directories": {
+    "lib": "npm_lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rmysliwczyk/calorie-tracker.git"
+  },
+  "author": "Rafał Myśliwczyk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rmysliwczyk/calorie-tracker/issues"
+  },
+  "homepage": "https://github.com/rmysliwczyk/calorie-tracker#readme",
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
