@@ -8,7 +8,8 @@ module.exports = {
         ]
     },
     entry: {
-        about: path.resolve(__dirname, 'calorie_tracker/static/calorie_tracker/react/pages/about.tsx')
+        about: path.resolve(__dirname, 'calorie_tracker/static/calorie_tracker/react/pages/about.tsx'),
+        user: path.resolve(__dirname, 'calorie_tracker/static/calorie_tracker/react/pages/user.tsx')
     },
     output: {
         filename: '[name].js',
