@@ -10,3 +10,4 @@ secret_key.txt
 npm_lib
 node_modules
 package-lock.json
+!**/react/lib
