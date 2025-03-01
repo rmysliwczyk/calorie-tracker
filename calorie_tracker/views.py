@@ -111,6 +111,9 @@ def products(request):
 def meals(request):
     return render(request, "calorie_tracker/meals.html")
 
+def about(request):
+    return render(request, "calorie_tracker/about.html")
+
 def register(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)

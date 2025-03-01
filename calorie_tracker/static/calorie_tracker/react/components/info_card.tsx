@@ -1,6 +1,6 @@
 import React from 'react';
 
-function InfoCard(title: string, content: string) {
+function InfoCard({title, content} : {title: string, content: string})  {
     return (
         <div className="react-info-card">
             <h5>{title}</h5>
@@ -8,3 +8,5 @@ function InfoCard(title: string, content: string) {
         </div>
     )
 }
+
+export default InfoCard;
