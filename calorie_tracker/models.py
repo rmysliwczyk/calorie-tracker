@@ -15,6 +15,13 @@ class PositiveDecimalField(models.DecimalField):
 
 # Create your models here.
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    calorie_goal = PositiveDecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f"Profile information for {self.user.username}"
+
 class Food(models.Model):
     name = models.CharField(max_length=64)
     calories = PositiveDecimalField(max_digits=10, decimal_places=2) # kcal/100g
