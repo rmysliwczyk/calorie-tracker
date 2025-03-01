@@ -36,6 +36,12 @@
                         <a class="nav-link" href="{% url 'calorie_tracker:products' %}">Products</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="{% url 'calorie_tracker:user' %}">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'calorie_tracker:about' %}">About</a>
+                    </li>
+                    <li class="nav-item">
                         <form method="POST" id="logout" action="{% url 'calorie_tracker:logout' %}">
                             {% csrf_token %}
                             <a href="#" class="nav-link" onclick="document.querySelector('#logout').submit();">Log out</a>
