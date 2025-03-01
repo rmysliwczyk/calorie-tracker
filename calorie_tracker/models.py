@@ -19,6 +19,10 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     calorie_goal = PositiveDecimalField(max_digits=10, decimal_places=2)
 
+    @property
+    def username(self):
+        return f"{self.user.username}"
+
     def __str__(self):
         return f"Profile information for {self.user.username}"
 

@@ -4,7 +4,7 @@ import InfoCard from './infoCard';
 function UserInfo({user} : {user: User} )  {
     return (
         <div className="react-user-info">
-            <h4>{user.username}</h4>
+            <h2>Profile information for {user.username}</h2>
             <InfoCard title='Calorie goal' content={user.calorie_goal} />
         </div>
     )

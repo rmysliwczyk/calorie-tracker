@@ -2,5 +2,7 @@
 {% load static %}
 {% block content %}
 <div id="react-content"></div>
+
+<script> sessionStorage.setItem("current_user_id", "{{user_id}}");</script>
 <script src="{% static 'calorie_tracker/react/pages/user.js' %}" type="application/javascript"></script>
 {% endblock %}

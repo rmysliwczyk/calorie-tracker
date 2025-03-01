@@ -1,16 +1,24 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import UserInfo from '../components/userInfo';
+import { getUserProfile } from '../lib/api';
 
-const root: React = createRoot(document.querySelector('#react-content'));
+document.addEventListener('DOMContentLoaded', function() {
 
-const user: User = {
-    username: "TEST",
-    calorie_goal: 100
-}
+    const root: React = createRoot(document.querySelector('#react-content'));
 
-root.render(
-    <>
-        <UserInfo user={user} />
-    </>
-)
+    async function renderPage() {
+
+        const user = await getUserProfile(Number(sessionStorage.getItem("current_user_id")));
+
+        root.render(
+            <>
+                <UserInfo user={user} />
+            </>
+        )
+
+    }
+
+    renderPage();
+
+})

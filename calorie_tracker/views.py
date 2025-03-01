@@ -9,6 +9,7 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.response import Response
 from django_filters import rest_framework as filters
 from django_filters import DateFilter
+from .permissions import IsOwnerOrStaff
 
 class ProductFilter(filters.FilterSet):
     class Meta:
@@ -23,6 +24,11 @@ class MealFilter(filters.FilterSet):
     class Meta:
         model = Meal
         fields = ["date"]
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
+    permission_classes = [IsOwnerOrStaff]
 
 class FoodViewSet(viewsets.ModelViewSet):
     queryset = Food.objects.all()
@@ -116,7 +122,7 @@ def about(request):
 
 @login_required
 def user(request):
-    return render(request, "calorie_tracker/user.html")
+    return render(request, "calorie_tracker/user.html", {"user_id":request.user.id})
 
 def register(request):
     if request.method == "POST":

@@ -20,6 +20,7 @@ from calorie_tracker import urls, views
 from rest_framework import routers
 
 router = routers.DefaultRouter()
+router.register(r"userprofiles", views.ProfileViewSet)
 router.register(r"foods", views.FoodViewSet)
 router.register(r"products", views.ProductViewSet)
 router.register(r"ingredients", views.IngredientViewSet)
