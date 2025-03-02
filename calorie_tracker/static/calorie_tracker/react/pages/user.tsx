@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import UserInfo from '../components/userInfo';
+import UserInfo from '../components/UserInfo';
 import { getUserProfile } from '../lib/api';
 
 document.addEventListener('DOMContentLoaded', function() {

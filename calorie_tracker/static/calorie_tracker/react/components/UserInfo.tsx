@@ -1,5 +1,5 @@
 import React from 'react';
-import InfoCard from './infoCard';
+import InfoCard from './InfoCard';
 
 function UserInfo({user} : {user: User} )  {
     return (

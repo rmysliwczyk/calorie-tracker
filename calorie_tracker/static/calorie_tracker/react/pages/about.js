@@ -10,13 +10,13 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./calorie_tracker/static/calorie_tracker/react/components/infoCard.tsx":
+/***/ "./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx":
 /*!******************************************************************************!*\
-  !*** ./calorie_tracker/static/calorie_tracker/react/components/infoCard.tsx ***!
+  !*** ./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx ***!
   \******************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nvar react_1 = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nfunction InfoCard(_a) {\n    var title = _a.title, content = _a.content;\n    return ((0, jsx_runtime_1.jsxs)(\"div\", { className: \"react-info-card\", children: [(0, jsx_runtime_1.jsx)(\"h5\", { children: title }), (0, jsx_runtime_1.jsx)(\"p\", { children: content })] }));\n}\nexports[\"default\"] = InfoCard;\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/components/infoCard.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nvar react_1 = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nfunction InfoCard(_a) {\n    var title = _a.title, content = _a.content;\n    return ((0, jsx_runtime_1.jsxs)(\"div\", { className: \"react-info-card\", children: [(0, jsx_runtime_1.jsx)(\"h5\", { children: title }), (0, jsx_runtime_1.jsx)(\"p\", { children: content })] }));\n}\nexports[\"default\"] = InfoCard;\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx?");
 
 /***/ }),
 
@@ -26,7 +26,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar 
   \**********************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nvar react_1 = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar client_1 = __webpack_require__(/*! react-dom/client */ \"./node_modules/react-dom/client.js\");\nvar infoCard_1 = __webpack_require__(/*! ../components/infoCard */ \"./calorie_tracker/static/calorie_tracker/react/components/infoCard.tsx\");\nvar root = (0, client_1.createRoot)(document.querySelector('#react-content'));\nvar aboutCalorieTracker = \"This is a web app project intended to be a fullstack learning opportunity.\";\nroot.render((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsx)(infoCard_1.default, { title: \"About calorie-tracker\", content: aboutCalorieTracker }) }));\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/pages/about.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nvar react_1 = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar client_1 = __webpack_require__(/*! react-dom/client */ \"./node_modules/react-dom/client.js\");\nvar InfoCard_1 = __webpack_require__(/*! ../components/InfoCard */ \"./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx\");\nvar root = (0, client_1.createRoot)(document.querySelector('#react-content'));\nvar aboutCalorieTracker = \"This is a web app project intended to be a fullstack learning opportunity.\";\nroot.render((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsx)(InfoCard_1.default, { title: \"About calorie-tracker\", content: aboutCalorieTracker }) }));\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/pages/about.tsx?");
 
 /***/ }),
 
