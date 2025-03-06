@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.core.exceptions import ObjectDoesNotExist
 from decimal import Decimal
 from .models import User, Profile, Product
@@ -44,3 +44,23 @@ class TestProductModel(TestCase):
         self.assertEqual(test_product.fats, Decimal("11"))
         self.assertEqual(test_product.carbs, 1)
         
+
+class TestAccessToViews(TestCase):
+    def setUp(self):
+        test_user = User(username="test")
+        test_user.set_password("test")
+        test_user.save()
+        self.c = Client()
+    
+    def test_about_view_is_available(self):
+        response = self.c.get("/about")
+        self.assertEqual(response.status_code, 200)
+
+    def test_meals_view_accepts_logged_in(self):
+        self.c.login(username="test", password="test")
+        response = self.c.get("/meals")
+        self.assertEqual(response.status_code, 200)
+
+    def test_meals_view_rejects_anonymous(self):
+        response = self.c.get("/meals")
+        self.assertNotEqual(response.status_code, 200)
