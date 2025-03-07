@@ -5,11 +5,13 @@ type User = {
 }
 
 type ListItemData = {
+	id: number,
     title: string,
     content: string
 }
 
 type Product = {
+	id: number,
 	name: string,
 	calories: number,
 	fats: number,

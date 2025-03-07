@@ -11,3 +11,5 @@ npm_lib
 node_modules
 package-lock.json
 !**/react/lib
+**/static/admin/**/*/
+**/static/rest_framework/**/*/

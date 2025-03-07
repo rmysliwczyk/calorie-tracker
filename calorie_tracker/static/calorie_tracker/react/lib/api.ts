@@ -34,6 +34,7 @@ export async function getProducts(name = "", barcode = ""): Promise<Array<Produc
     }
     catch (error) {
 		return ([{
+            id: null,
 			name: null,
 			calories: null,
 			fats: null,
