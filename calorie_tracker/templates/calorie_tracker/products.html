@@ -1,9 +1,9 @@
 {% extends "calorie_tracker/layout.html" %}
 {% load static %}
 {% block content %}
-<div id="products-div"></div>
+<div id="react-content"></div>
 
 <script>const csrftoken = "{{ csrf_token }}"</script>
 <script src="{% static 'calorie_tracker/scan.js' %}"></script>
-<script src="{% static 'calorie_tracker/products.js' %}"></script>
+<script src="{% static 'calorie_tracker/react/pages/products.js' %}"></script>
 {% endblock %}

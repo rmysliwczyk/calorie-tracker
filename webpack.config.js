@@ -9,7 +9,8 @@ module.exports = {
     },
     entry: {
         about: path.resolve(__dirname, 'calorie_tracker/static/calorie_tracker/react/pages/about.tsx'),
-        user: path.resolve(__dirname, 'calorie_tracker/static/calorie_tracker/react/pages/user.tsx')
+        user: path.resolve(__dirname, 'calorie_tracker/static/calorie_tracker/react/pages/user.tsx'),
+		products: path.resolve(__dirname, 'calorie_tracker/static/calorie_tracker/react/pages/products.tsx')
     },
     output: {
         filename: '[name].js',
