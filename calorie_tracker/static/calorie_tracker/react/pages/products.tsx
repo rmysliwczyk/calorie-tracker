@@ -2,15 +2,22 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import ProductsList from '../components/ProductsList'
+import SelectedProduct from '../components/SelectedProduct';
+import { getProduct } from "../lib/api";
 
 const root = createRoot(document.querySelector("#react-content"));
 
 function ProductsPage() {
 	const [selectedProduct, setSelectedProduct] = useState(function() {return window.history.state?.count ?? null});
+    const [product, setProduct] = useState<Product|null>(null)
 
 	useEffect(function() {
 		const handlePopState = function(event: PopStateEvent) {
-			setSelectedProduct(event.state?.selectedProduct ?? null);
+			const fromWindowState = event.state?.selectedProduct ?? null;
+			setSelectedProduct(fromWindowState);
+			if(fromWindowState === null){
+				setProduct(null);
+			}
 		}
 
 		window.addEventListener("popstate", handlePopState);
@@ -29,11 +36,24 @@ function ProductsPage() {
 		window.history.pushState({selectedProduct}, "", window.location.href)
     }
 
-	if(selectedProduct !== null)
+	useEffect(function() {
+		async function fetchData() {
+			const receivedData = await getProduct(selectedProduct);
+			setProduct(receivedData);
+		};
+
+		if(selectedProduct !== null)
+		{
+			fetchData();
+		}
+		
+    },[selectedProduct])
+
+	if(product !== null)
 	{
 		return (
 			<>
-				Selected product with id {selectedProduct}
+				<SelectedProduct product={product} />
 			</>
 		)
 	} else {

@@ -48,4 +48,37 @@ export async function getProducts(searchQuery: string = "", barcode: string = ""
     }
 }
 
+export async function getProduct(productId: BigInt): Promise<Product> {
+    try {
+        let url = `api/products/${productId}`;
+        const response = await fetch(url, {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+
+        return await response.json();
+    }
+    catch (error) {
+		return ({
+            id: null,
+			name: null,
+			calories: null,
+			fats: null,
+			carbs: null,
+			proteins: null,
+			portion_size: null,
+			is_locked: null,
+			barcode: null,
+			error_message: error
+		})
+    }
+}
+
 
