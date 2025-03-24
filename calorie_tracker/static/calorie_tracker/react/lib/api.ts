@@ -15,9 +15,9 @@ export async function getUserProfile(userId: number = null): Promise<User> {
     }
 }
 
-export async function getProducts(name = "", barcode = ""): Promise<Array<Product>> {
+export async function getProducts(searchQuery: string = "", barcode: string = ""): Promise<Array<Product>> {
     try {
-        let url = `api/products/?name__contains=${name}&barcode__contains=${barcode}`;
+        let url = `api/products/?name__contains=${searchQuery}&barcode__contains=${barcode}`;
         const response = await fetch(url, {
             method: "GET",
             credentials: "same-origin",

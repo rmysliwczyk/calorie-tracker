@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import InfoCard from '../components/InfoCard';
 
-const root: React = createRoot(document.querySelector('#react-content'));
+const root = createRoot(document.querySelector('#react-content'));
 const aboutCalorieTracker = "This is a web app project intended to be a fullstack learning opportunity."
 root.render(
     <>

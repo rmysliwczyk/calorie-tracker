@@ -16,7 +16,7 @@
   \******************************************************************************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nvar react_1 = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nfunction InfoCard(_a) {\n    var title = _a.title, content = _a.content;\n    return ((0, jsx_runtime_1.jsxs)(\"div\", { className: \"react-info-card\", children: [(0, jsx_runtime_1.jsx)(\"h5\", { children: title }), (0, jsx_runtime_1.jsx)(\"p\", { children: content })] }));\n}\nexports[\"default\"] = InfoCard;\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nfunction InfoCard(_a) {\n    var title = _a.title, content = _a.content;\n    return ((0, jsx_runtime_1.jsxs)(\"div\", { className: \"react-info-card\", children: [(0, jsx_runtime_1.jsx)(\"h5\", { children: title }), (0, jsx_runtime_1.jsx)(\"p\", { children: content })] }));\n}\nexports[\"default\"] = InfoCard;\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx?");
 
 /***/ }),
 
@@ -24,9 +24,9 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar 
 /*!**********************************************************************!*\
   !*** ./calorie_tracker/static/calorie_tracker/react/pages/about.tsx ***!
   \**********************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nvar react_1 = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\nvar client_1 = __webpack_require__(/*! react-dom/client */ \"./node_modules/react-dom/client.js\");\nvar InfoCard_1 = __webpack_require__(/*! ../components/InfoCard */ \"./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx\");\nvar root = (0, client_1.createRoot)(document.querySelector('#react-content'));\nvar aboutCalorieTracker = \"This is a web app project intended to be a fullstack learning opportunity.\";\nroot.render((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsx)(InfoCard_1.default, { title: \"About calorie-tracker\", content: aboutCalorieTracker }) }));\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/pages/about.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"./node_modules/react/jsx-runtime.js\");\nvar client_1 = __webpack_require__(/*! react-dom/client */ \"./node_modules/react-dom/client.js\");\nvar InfoCard_1 = __importDefault(__webpack_require__(/*! ../components/InfoCard */ \"./calorie_tracker/static/calorie_tracker/react/components/InfoCard.tsx\"));\nvar root = (0, client_1.createRoot)(document.querySelector('#react-content'));\nvar aboutCalorieTracker = \"This is a web app project intended to be a fullstack learning opportunity.\";\nroot.render((0, jsx_runtime_1.jsx)(jsx_runtime_1.Fragment, { children: (0, jsx_runtime_1.jsx)(InfoCard_1.default, { title: \"About calorie-tracker\", content: aboutCalorieTracker }) }));\n\n\n//# sourceURL=webpack://calorie-tracker/./calorie_tracker/static/calorie_tracker/react/pages/about.tsx?");
 
 /***/ }),
 
@@ -150,7 +150,7 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
-/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 		__webpack_modules__[moduleId].call(module.exports, module, module.exports, __webpack_require__);
 /******/ 	
 /******/ 		// Flag the module as loaded
 /******/ 		module.loaded = true;
@@ -173,7 +173,7 @@ eval("\n\nif (false) {} else {\n  module.exports = __webpack_require__(/*! ./cjs
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
-/******/ 	// This entry module can't be inlined because the eval devtool is used.
+/******/ 	// This entry module is referenced by other modules so it can't be inlined
 /******/ 	var __webpack_exports__ = __webpack_require__("./calorie_tracker/static/calorie_tracker/react/pages/about.tsx");
 /******/ 	
 /******/ })()

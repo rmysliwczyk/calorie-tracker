@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "esModuleInterop": true
     },
     "include": ["**/*.tsx", "**/*.ts"],
     "exclude": ["node_modules/**/*"]

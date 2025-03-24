@@ -5,7 +5,7 @@ import { getUserProfile } from '../lib/api';
 
 document.addEventListener('DOMContentLoaded', function() {
 
-    const root: React = createRoot(document.querySelector('#react-content'));
+    const root = createRoot(document.querySelector('#react-content'));
 
     async function renderPage() {
 
