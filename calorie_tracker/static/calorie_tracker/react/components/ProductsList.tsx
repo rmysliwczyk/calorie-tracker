@@ -4,7 +4,7 @@ import List from '../components/List'
 import SearchInput from '../components/SearchInput'
 import { getProducts } from '../lib/api'
 
-export default function ProductsList({handleSelectProduct}:{handleSelectProduct : Function}) {
+export default function ProductsList({handleSelectProduct, onAdd, onScan}:{handleSelectProduct : Function, onAdd : Function, onScan : Function}) {
     const [products, setProducts] = useState([]);
     const [searchValue, setSearchValue] = useState('');
     const [searchInProgress, setSearchInProgress] = useState(false);
@@ -46,7 +46,7 @@ export default function ProductsList({handleSelectProduct}:{handleSelectProduct 
 
     return (
         <>
-            <SearchInput placeholder='Enter product name' inputValue={searchValue} onSearch={handleSearchInputChange} />
+            <SearchInput placeholder='Enter product name' inputValue={searchValue} onSearch={handleSearchInputChange} onAdd={onAdd} onScan={onScan} />
             <List data={listData} handleSelectItem={handleSelectProduct} loading={searchInProgress}/>
         </>
     );
