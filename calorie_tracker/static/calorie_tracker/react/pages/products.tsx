@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import ProductsList from '../components/ProductsList'
 import SelectedProduct from '../components/SelectedProduct';
-import { getProduct } from "../lib/api";
+import { addProduct, getProduct } from "../lib/api";
 import AddProduct from '../components/AddProduct';
 
 const root = createRoot(document.querySelector("#react-content"));
@@ -54,6 +54,10 @@ function ProductsPage() {
 		setProductPageAction(PageAction.Add)
 	}
 
+	async function handleSubmitProductForm(formData){
+		addProduct(formData, sessionStorage.getItem("csrftoken"));
+	}
+
 	async function handleScanProduct(){
 		alert("scan product");
 	}
@@ -87,7 +91,7 @@ function ProductsPage() {
 	} else if(productPageAction == PageAction.Add) {
 		return (
 			<>
-				<AddProduct />
+				<AddProduct handleSubmitProductForm={handleSubmitProductForm}/>
 			</>
 		)
 	}

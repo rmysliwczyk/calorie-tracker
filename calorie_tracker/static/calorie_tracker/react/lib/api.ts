@@ -1,9 +1,9 @@
 export async function getUserProfile(userId: number = null): Promise<User> {
     try {
         const response = await fetch(`api/userprofiles/${userId}`);
-		if (!response.ok) {
-			throw new Error(`Response status: ${response.status}`);
-		}
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
         return await response.json();
     }
     catch (error) {
@@ -12,6 +12,42 @@ export async function getUserProfile(userId: number = null): Promise<User> {
             calorie_goal: null,
             error_message: error
         }
+    }
+}
+
+export async function addProduct(product: Product, csrftoken: string): Promise<Product> {
+    try {
+        let url = `api/products/`;
+        const response = await fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": csrftoken,
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(product)
+        });
+
+        if (!response.ok) {
+            return null;
+        }
+
+        return await response.json();
+    }
+    catch (error) {
+        return ({
+            id: null,
+            name: null,
+            calories: null,
+            fats: null,
+            carbs: null,
+            proteins: null,
+            portion_size: null,
+            is_locked: null,
+            barcode: null,
+            error_message: error
+        })
     }
 }
 
@@ -33,18 +69,18 @@ export async function getProducts(searchQuery: string = "", barcode: string = ""
         return await response.json();
     }
     catch (error) {
-		return ([{
+        return ([{
             id: null,
-			name: null,
-			calories: null,
-			fats: null,
-			carbs: null,
-			proteins: null,
-			portion_size: null,
-			is_locked: null,
-			barcode: null,
-			error_message: error
-		}])
+            name: null,
+            calories: null,
+            fats: null,
+            carbs: null,
+            proteins: null,
+            portion_size: null,
+            is_locked: null,
+            barcode: null,
+            error_message: error
+        }])
     }
 }
 
@@ -66,19 +102,17 @@ export async function getProduct(productId: BigInt): Promise<Product> {
         return await response.json();
     }
     catch (error) {
-		return ({
+        return ({
             id: null,
-			name: null,
-			calories: null,
-			fats: null,
-			carbs: null,
-			proteins: null,
-			portion_size: null,
-			is_locked: null,
-			barcode: null,
-			error_message: error
-		})
+            name: null,
+            calories: null,
+            fats: null,
+            carbs: null,
+            proteins: null,
+            portion_size: null,
+            is_locked: null,
+            barcode: null,
+            error_message: error
+        })
     }
 }
-
-

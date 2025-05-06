@@ -3,7 +3,7 @@
 {% block content %}
 <div id="react-content"></div>
 
-<script>const csrftoken = "{{ csrf_token }}"</script>
+<script>sessionStorage.setItem("csrftoken", "{{ csrf_token }}")</script>
 <script src="{% static 'calorie_tracker/scan.js' %}"></script>
 <script src="{% static 'calorie_tracker/react/pages/products.js' %}"></script>
 {% endblock %}
