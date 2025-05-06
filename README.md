@@ -1,5 +1,7 @@
 # Calorie Tracker
 Test it [here](https://calorie-tracker.webredirect.org)
+## Current Plans:
+Rewrite the UI using React. Currently this is being done on `react-rewrite` branch.
 
 <picture>
     <img src="image.png" style="max-width: 500px; display: block; margin: auto;">
