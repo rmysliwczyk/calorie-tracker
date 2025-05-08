@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Grid2, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, InputAdornment, Button } from "@mui/material";
 
-export default function AddProduct({ handleSubmitProductForm }: { handleSubmitProductForm: Function }) {
+export default function AddProduct({ handleSubmitAddProductForm }: { handleSubmitAddProductForm: Function }) {
     const [formData, setFormData] = useState<FormData>(
         {
             name: "",
@@ -113,7 +113,7 @@ export default function AddProduct({ handleSubmitProductForm }: { handleSubmitPr
                         />
                     </Grid2>
                     <Grid2 size={12}>
-                        <Button onClick={function () { handleSubmitProductForm(formData) }}>Add product</Button>
+                        <Button onClick={function () { handleSubmitAddProductForm(formData) }}>Add product</Button>
                     </Grid2>
                 </Grid2>
             </Paper>

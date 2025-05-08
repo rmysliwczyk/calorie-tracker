@@ -116,3 +116,27 @@ export async function getProduct(productId: BigInt): Promise<Product> {
         })
     }
 }
+
+export async function updateProduct(product: Product, csrftoken: string): Promise<number> {
+    try {
+        let url = `api/products/${product.id}/`;
+        const response = await fetch(url, {
+            method: "PATCH",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": csrftoken,
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(product)
+        });
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+        }
+        console.log(response.status)
+        return await response.status;
+    }
+    catch (error) {
+        console.log(error.message)
+    }
+}
