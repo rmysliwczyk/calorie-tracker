@@ -1,3 +1,5 @@
+>[!WARNING]
+>This is no longer maintained and worked on. I've started the project from scratch using a different tech stack. Here is the new [backend](https://github.com/rmysliwczyk/calorie-tracker-backend) portion, and here is the new [frontend](https://github.com/rmysliwczyk/calorie-tracker-frontend)
 # Calorie Tracker
 Test it [here](https://calorie-tracker.webredirect.org)
 ## Current Plans:
